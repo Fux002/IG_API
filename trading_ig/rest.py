@@ -28,6 +28,18 @@ class DealingException(Exception):
         self.message = message
 
 
+# Declare some custom exceptions to do proper error handling
+class DealingDictionaryException(Exception):
+
+    def __init__ (self, message):
+
+        # Call the base class constructor with the parameters it needs
+        super().__init__(message)
+
+        # Print the nessage
+        self.message = message
+
+
 
 class IGSessionCRUD(object):
     """
@@ -363,7 +375,7 @@ class IGService:
     def fetch_deal_by_deal_reference(self, deal_reference, session=None):
         """Returns a deal confirmation for the given deal reference"""
         # Add a sleep as this function is requested by deal origination functions too quickly
-        
+        try:
         params = {}
         url_params = {
             'deal_reference': deal_reference
@@ -372,7 +384,12 @@ class IGService:
         action = 'read'
         response = self._req(action, endpoint, params, session)
         data = self.parse_response(response.text)
-        return data
+        
+        # Handle the retuended string
+        if 'error.confirms.deal-not-found' in data:
+            raise DealingDictionaryException(data)
+        else:
+            return data
 
     def fetch_open_positions(self, session = None):
         """Returns all open positions for the active account"""
