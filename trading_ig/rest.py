@@ -15,6 +15,20 @@ from requests import Session
 from .utils import (_HAS_PANDAS, _HAS_BUNCH)
 from .utils import (conv_resol, conv_datetime, conv_to_ms)
 
+
+# Declare some custom exceptions to do proper error handling
+class DealingException(Exception):
+
+    def __init__ (self, message):
+
+        # Call the base class constructor with the parameters it needs
+        super().__init__(message)
+
+        # Print the nessage
+        self.message = message
+
+
+
 class IGSessionCRUD(object):
     """
     Session with CRUD operation
@@ -349,7 +363,6 @@ class IGService:
     def fetch_deal_by_deal_reference(self, deal_reference, session=None):
         """Returns a deal confirmation for the given deal reference"""
         # Add a sleep as this function is requested by deal origination functions too quickly
-        time.sleep(0.5)
         
         params = {}
         url_params = {
@@ -412,9 +425,11 @@ class IGService:
 
         if response.status_code == 200:
             deal_reference = json.loads(response.text)['dealReference']
-            return self.fetch_deal_by_deal_reference(deal_reference)
+            #return self.fetch_deal_by_deal_reference(deal_reference)
+            return deal_reference
         else:
-            return response.text
+            #return response.text
+            raise DealingException(response.text)
 
     def create_open_position(self, currency_code, direction, epic, expiry,
                              force_open, guaranteed_stop, level, limit_distance,
@@ -445,10 +460,11 @@ class IGService:
         if response.status_code == 200:
             deal_reference = json.loads(response.text)['dealReference']
 
-            return self.fetch_deal_by_deal_reference(deal_reference)
+            #return self.fetch_deal_by_deal_reference(deal_reference)
+            return deal_reference
         else:
-            print('FAILLLLL', response.text)
-            return response.text  # parse_response ?
+            #return response.text
+            raise DealingException(response.text)
 
     def update_open_position(self, limit_level, stop_level, deal_id,
                              session=None):
@@ -466,9 +482,11 @@ class IGService:
 
         if response.status_code == 200:
             deal_reference = json.loads(response.text)['dealReference']
-            return self.fetch_deal_by_deal_reference(deal_reference)
+            #return self.fetch_deal_by_deal_reference(deal_reference)
+            return deal_reference
         else:
-            return response.text  # parse_response ?
+            #return response.text
+            raise DealingException(response.text)
 
     def fetch_working_orders(self, session = None):
         """Returns all open working orders for the active account"""
@@ -544,9 +562,11 @@ class IGService:
 
         if response.status_code == 200:
             deal_reference = json.loads(response.text)['dealReference']
-            return self.fetch_deal_by_deal_reference(deal_reference)
+            #return self.fetch_deal_by_deal_reference(deal_reference)
+            return deal_reference
         else:
-            return response.text  # parse_response ?
+            #return response.text
+            raise DealingException(response.text)
 
     def delete_working_order(self, deal_id, session=None):
         """Deletes an OTC working order"""
@@ -560,7 +580,8 @@ class IGService:
 
         if response.status_code == 200:
             deal_reference = json.loads(response.text)['dealReference']
-            return self.fetch_deal_by_deal_reference(deal_reference)
+            #return self.fetch_deal_by_deal_reference(deal_reference)
+            return deal_reference
         else:
             return response.text  # parse_response ?
 
@@ -590,9 +611,11 @@ class IGService:
 
         if response.status_code == 200:
             deal_reference = json.loads(response.text)['dealReference']
-            return self.fetch_deal_by_deal_reference(deal_reference)
+            #return self.fetch_deal_by_deal_reference(deal_reference)
+            return deal_reference
         else:
-            return response.text  # parse_response ?
+            #return response.text
+            raise DealingException(response.text)
 
     ############ END ############
 
