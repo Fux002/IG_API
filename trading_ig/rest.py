@@ -375,7 +375,6 @@ class IGService:
     def fetch_deal_by_deal_reference(self, deal_reference, session=None):
         """Returns a deal confirmation for the given deal reference"""
         # Add a sleep as this function is requested by deal origination functions too quickly
-        try:
         params = {}
         url_params = {
             'deal_reference': deal_reference
@@ -384,7 +383,7 @@ class IGService:
         action = 'read'
         response = self._req(action, endpoint, params, session)
         data = self.parse_response(response.text)
-        
+
         # Handle the retuended string
         if 'error.confirms.deal-not-found' in data:
             raise DealingDictionaryException(data)
