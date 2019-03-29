@@ -384,12 +384,10 @@ class IGService:
         response = self._req(action, endpoint, params, session)
 
         # Test the response
-        print(response)
         if response.status_code == 200:
-            print('getting data')
 
             # Parse the data
-            data = self.parse_response(response.text)
+            return self.parse_response(response.text)
         else:
 
             # Raise the exception
