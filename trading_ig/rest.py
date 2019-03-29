@@ -385,7 +385,7 @@ class IGService:
         data = self.parse_response(response.text)
 
         # Handle the retuended string
-        if 'error.confirms.deal-not-found' in data:
+        if data is None:
             raise DealingDictionaryException(data)
         else:
             return data
