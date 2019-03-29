@@ -383,17 +383,14 @@ class IGService:
         action = 'read'
         response = self._req(action, endpoint, params, session)
 
-        print('_____________________________________________')
-        print(response)
-        print('_____________________________________________')
-
-        data = self.parse_response(response.text)
-
-        # Handle the retuended string
-        if data is None:
-            raise DealingDictionaryException(data)
+        # Test the response
+        if response.status_code == 200:
+            
+            # Parse the data
+            data = self.parse_response(response.text)
         else:
-            return data
+            # Raise the exception
+            raise DealingDictionaryException(data)
 
     def fetch_open_positions(self, session = None):
         """Returns all open positions for the active account"""
