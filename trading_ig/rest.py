@@ -382,11 +382,12 @@ class IGService:
         endpoint = '/confirms/{deal_reference}'.format(**url_params)
         action = 'read'
         response = self._req(action, endpoint, params, session)
-        data = self.parse_response(response.text)
 
         print('_____________________________________________')
-        print(data)
+        print(response)
         print('_____________________________________________')
+
+        data = self.parse_response(response.text)
 
         # Handle the retuended string
         if data is None:
