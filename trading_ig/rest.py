@@ -384,7 +384,7 @@ class IGService:
         response = self._req(action, endpoint, params, session)
 
         # Test the response
-        print response
+        print(response)
         if response.status_code == 200:
             print('getting data')
 
