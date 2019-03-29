@@ -385,12 +385,13 @@ class IGService:
 
         # Test the response
         if response.status_code == 200:
-            
+
             # Parse the data
             data = self.parse_response(response.text)
         else:
+
             # Raise the exception
-            raise DealingDictionaryException(data)
+            raise DealingDictionaryException('Could not get the dictionary')
 
     def fetch_open_positions(self, session = None):
         """Returns all open positions for the active account"""
