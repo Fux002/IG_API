@@ -384,6 +384,10 @@ class IGService:
         response = self._req(action, endpoint, params, session)
         data = self.parse_response(response.text)
 
+        print('_____________________________________________')
+        print(data)
+        print('_____________________________________________')
+
         # Handle the retuended string
         if data is None:
             raise DealingDictionaryException(data)
