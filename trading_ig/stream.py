@@ -24,11 +24,6 @@ class IGStreamService(object):
 
     def connect(self, accountId):
         cst = self.ig_service.crud_session.CLIENT_TOKEN
-
-        print('________________')
-        print(cst)
-        print('________________')
-
         xsecuritytoken = self.ig_service.crud_session.SECURITY_TOKEN
         lightstreamerEndpoint = self.ig_session[u'lightstreamerEndpoint']
         clientId = self.ig_session[u'clientId']
