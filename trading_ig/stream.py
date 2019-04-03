@@ -42,6 +42,6 @@ class IGStreamService(object):
             logger.error(traceback.format_exc())
             sys.exit(1)
 
-    def disconnect(self, key):
-        self.ls_client.unsubscribe(key)
-        self.ls_client.disconnect(key)
+    def disconnect(self):
+        self.ls_client.unsubscribe()
+        self.ls_client.disconnect()
