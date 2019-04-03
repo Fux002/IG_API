@@ -48,6 +48,5 @@ class IGStreamService(object):
             sys.exit(1)
 
     def disconnect(self):
-        cst = self.ig_service.crud_session.CLIENT_TOKEN
-        self.ls_client.unsubscribe(cst)
+        #self.ls_client.unsubscribe(cst)
         self.ls_client.disconnect()
