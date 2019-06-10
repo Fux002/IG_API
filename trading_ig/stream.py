@@ -41,6 +41,7 @@ class IGStreamService(object):
             logger.error("Unable to connect to Lightstreamer Server")
             logger.error(traceback.format_exc())
             #sys.exit(1) Don t do this
+            pass # not to breal the loop
 
     def disconnect(self):
         #self.ls_client.unsubscribe(cst)
