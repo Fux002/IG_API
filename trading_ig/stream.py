@@ -40,7 +40,7 @@ class IGStreamService(object):
         except Exception as e:
             logger.error("Unable to connect to Lightstreamer Server")
             logger.error(traceback.format_exc())
-            sys.exit(1)
+            #sys.exit(1) Don t do this
 
     def disconnect(self):
         #self.ls_client.unsubscribe(cst)
