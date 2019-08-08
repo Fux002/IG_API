@@ -9,6 +9,7 @@ Modified by Femto Trader - 2014-2015 - https://github.com/femtotrader/
 """
 import time
 import json
+import datetime
 
 from requests import Session
 
