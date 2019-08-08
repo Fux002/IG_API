@@ -557,7 +557,10 @@ class IGService:
                              session=None):
         """Creates an OTC working order"""
 
-        good_till_date = conv_datetime(good_till_date, 3)
+        # Only convert the date is datetime
+        if isinstance(good_till_date, datetime.datetime):
+
+            good_till_date = conv_datetime(good_till_date, 3)
 
         params = {
             'currencyCode': currency_code,
