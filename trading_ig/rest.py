@@ -518,7 +518,7 @@ class IGService:
             'stopLevel': stop_level,
             'trailingStop' : "false",
             'trailingStopDistance' : None,
-            'trailingStopIncrement' : None
+            'trailingStopIncrement' : None,
             'guaranteedStop': guaranteed_stop,
             'stopDistance': stop_distance
         }
