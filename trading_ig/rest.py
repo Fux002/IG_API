@@ -188,7 +188,7 @@ class IGService:
     IG_USERNAME = None
     IG_PASSWORD = None
 
-    def __init__(self, username, password, api_key, acc_type="demo", version=1, 
+    def __init__(self, username, password, api_key, acc_type="demo", version, 
                  session=None):
         """Constructor, calls the method required to connect to
         the API (accepts acc_type = LIVE or DEMO)"""
