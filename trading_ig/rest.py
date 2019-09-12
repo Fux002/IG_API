@@ -482,6 +482,8 @@ class IGService:
             'trailingStopIncrement' : trailing_stop_increment
         }
 
+        print(params)
+
         endpoint = '/positions/otc'
         action = 'create'
         response = self._req(action, endpoint, params, session)
