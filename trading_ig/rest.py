@@ -458,8 +458,9 @@ class IGService:
 
     def create_open_position(self, currency_code, direction, epic, expiry,
                              force_open, guaranteed_stop, level, limit_distance,
-                             limit_level, order_type, size,
-                             stop_distance, stop_level, session=None):
+                             limit_level, order_type, quote_id, size,
+                             stop_distance, stop_level, trailing_stop, 
+                             , trailing_stop_increment,session=None):
         """Creates an OTC position"""
         params = {
             'currencyCode': currency_code,
@@ -472,13 +473,12 @@ class IGService:
             'limitDistance': limit_distance,
             'limitLevel': limit_level,
             'orderType': order_type,
-            #'quoteId': quote_id,
+            'quoteId': quote_id,
             'size': size,
             'stopDistance': stop_distance,
-            'stopLevel': stop_level#,
-            #'timeInForce': time_force,
-            #'trailingStop': trailing_stop,
-            #'trailingStopIncrement': trailing_stop_increment
+            'stopLevel': stop_level,
+            'trailingStop': trailing_stop,
+            'trailingStopIncrement': trailing_stop_increment
         }
 
         print(params)
