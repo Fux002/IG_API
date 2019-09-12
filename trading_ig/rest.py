@@ -498,7 +498,7 @@ class IGService:
             #return response.text
             raise DealingException(response.text)
 
-    def update_open_position(self, limit_level, stop_level, deal_id,
+    def update_open_position_oldversion(self, limit_level, stop_level, deal_id,
                              session=None):
         """Updates an OTC position"""
         params = {
@@ -520,14 +520,13 @@ class IGService:
             #return response.text
             raise DealingException(response.text)
 
-    def update_open_position2(self, limit_level, stop_level, guaranteed_stop, deal_id,
+    def update_open_position(self, limit_level, stop_level, guaranteed_stop, deal_id,
                              session=None):
         """Updates an OTC position"""
         params = {
             'limitLevel': limit_level,
             'stopLevel': stop_level,
             'trailingStop' : "false",
-            'trailingStopDistance' : None,
             'trailingStopIncrement' : None,
             'guaranteedStop': guaranteed_stop
         }
