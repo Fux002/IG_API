@@ -519,8 +519,7 @@ class IGService:
             'trailingStop' : "false",
             'trailingStopDistance' : None,
             'trailingStopIncrement' : None,
-            'guaranteedStop': guaranteed_stop,
-            'stopDistance': stop_distance
+            'guaranteedStop': guaranteed_stop
         }
         url_params = {
             'deal_id': deal_id
