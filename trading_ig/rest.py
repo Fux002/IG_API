@@ -492,7 +492,7 @@ class IGService:
         params = {
             'limitLevel': limit_level,
             'stopLevel': stop_level,
-            'guaranteedStop': guaranteed_stop,
+            'guaranteedStop': guaranteed_stop
         }
         url_params = {
             'deal_id': deal_id
