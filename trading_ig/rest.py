@@ -64,7 +64,7 @@ class IGSessionCRUD(object):
         self.HEADERS['BASIC'] = {
             'X-IG-API-KEY': self.API_KEY,
             'Content-Type': 'application/json',
-            'Accept': 'application/json; charset=UTF-8'
+            'Accept': 'application/json; charset=UTF-8',
             'Version' : version
         }
 
