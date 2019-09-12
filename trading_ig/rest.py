@@ -492,7 +492,7 @@ class IGService:
         params = {
             'limitLevel': limit_level,
             'stopLevel': stop_level,
-            'trailingStop' : 'false',
+            'trailingStop' : "false",
             'trailingStopDistance' : None,
             'trailingStopIncrement' : None
             #'guaranteedStop': guaranteed_stop
