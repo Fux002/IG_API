@@ -472,7 +472,7 @@ class IGService:
             'limitDistance': limit_distance,
             'limitLevel': limit_level,
             'orderType': order_type,
-            'quoteId': quote_id,
+            #'quoteId': quote_id,
             'size': size,
             'stopDistance': stop_distance,
             'stopLevel': stop_level#,
