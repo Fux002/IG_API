@@ -541,6 +541,7 @@ class IGService:
         print(response)
 
         if response.status_code == 200:
+            time.sleep(5)
             deal_reference = json.loads(response.text)['dealReference']
             #return self.fetch_deal_by_deal_reference(deal_reference)
             return deal_reference
