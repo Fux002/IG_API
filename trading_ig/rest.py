@@ -491,7 +491,10 @@ class IGService:
         """Updates an OTC position"""
         params = {
             'limitLevel': limit_level,
-            'stopLevel': stop_level#,
+            'stopLevel': stop_level,
+            'trailingStop' : None,
+            'trailingStopDistance' : None,
+            'trailingStopIncrement' : None
             #'guaranteedStop': guaranteed_stop
         }
         url_params = {
