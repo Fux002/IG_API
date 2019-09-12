@@ -488,7 +488,29 @@ class IGService:
             #return response.text
             raise DealingException(response.text)
 
-    def update_open_position(self, limit_level, stop_level, guaranteed_stop, deal_id,
+    def update_open_position(self, limit_level, stop_level, deal_id,
+                             session=None):
+        """Updates an OTC position"""
+        params = {
+            'limitLevel': limit_level,
+            'stopLevel': stop_level
+        }
+        url_params = {
+            'deal_id': deal_id
+        }
+        endpoint = '/positions/otc/{deal_id}'.format(**url_params)
+        action = 'update'
+        response = self._req(action, endpoint, params, session)
+
+        if response.status_code == 200:
+            deal_reference = json.loads(response.text)['dealReference']
+            #return self.fetch_deal_by_deal_reference(deal_reference)
+            return deal_reference
+        else:
+            #return response.text
+            raise DealingException(response.text)
+
+    def update_open_position2(self, limit_level, stop_level, guaranteed_stop, deal_id,
                              session=None):
         """Updates an OTC position"""
         params = {
@@ -645,6 +667,7 @@ class IGService:
         else:
             #return response.text
             raise DealingException(response.text)
+
 
     ############ END ############
 
