@@ -459,9 +459,7 @@ class IGService:
     def create_open_position(self, currency_code, direction, epic, expiry,
                              force_open, guaranteed_stop, level, limit_distance,
                              limit_level, order_type, quote_id, size,
-                             stop_distance, stop_level, time_force, 
-                             trailing_stop, trailing_stop_increment, 
-                             dealReference, session=None):
+                             stop_distance, stop_level, session=None):
         """Creates an OTC position"""
         params = {
             'currencyCode': currency_code,
