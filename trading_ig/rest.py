@@ -538,6 +538,7 @@ class IGService:
         endpoint = '/positions/otc/{deal_id}'.format(**url_params)
         action = 'update'
         response = self._req(action, endpoint, params, session)
+        print(response)
 
         if response.status_code == 200:
             deal_reference = json.loads(response.text)['dealReference']
