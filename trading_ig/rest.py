@@ -57,7 +57,7 @@ class IGSessionCRUD(object):
 
     HEADERS = {}
 
-    def __init__(self, base_url, api_key, session, version):
+    def __init__(self, base_url, api_key, session, version=1):
         self.BASE_URL = base_url
         self.API_KEY = api_key
         self.VERSION = str(version)
@@ -191,7 +191,7 @@ class IGService:
     IG_USERNAME = None
     IG_PASSWORD = None
 
-    def __init__(self, username, password, api_key, acc_type, version, 
+    def __init__(self, username, password, api_key, acc_type, version=1, 
                  session=None):
         """Constructor, calls the method required to connect to
         the API (accepts acc_type = LIVE or DEMO)"""
