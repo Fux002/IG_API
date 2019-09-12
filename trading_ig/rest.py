@@ -527,8 +527,8 @@ class IGService:
             'limitLevel': limit_level,
             'stopLevel': stop_level,
             'trailingStop' : "false",
-            'trailingStopIncrement' : None,
-            'guaranteedStop': guaranteed_stop
+            'trailingStopIncrement' : None#,
+            #'guaranteedStop': guaranteed_stop
         }
         url_params = {
             'deal_id': deal_id
