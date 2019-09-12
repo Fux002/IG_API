@@ -60,12 +60,13 @@ class IGSessionCRUD(object):
     def __init__(self, base_url, api_key, session, version):
         self.BASE_URL = base_url
         self.API_KEY = api_key
+        self.VERSION = str(version)
 
         self.HEADERS['BASIC'] = {
             'X-IG-API-KEY': self.API_KEY,
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8',
-            'Version' : str(version)
+            'Version' : self.VERSION
         }
 
         self.session = session
@@ -163,7 +164,8 @@ class IGSessionCRUD(object):
             'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
             'CST': self.CLIENT_TOKEN,
             'Content-Type': 'application/json',
-            'Accept': 'application/json; charset=UTF-8'
+            'Accept': 'application/json; charset=UTF-8',
+            'Version' : self.VERSION
         }
 
         self.HEADERS['DELETE'] = {
@@ -172,6 +174,7 @@ class IGSessionCRUD(object):
             'CST': self.CLIENT_TOKEN,
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8',
+            'Version' : self.VERSION,
             '_method': 'DELETE'
         }
 
