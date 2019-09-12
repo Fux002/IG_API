@@ -66,7 +66,7 @@ class IGSessionCRUD(object):
             'X-IG-API-KEY': self.API_KEY,
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8',
-            'Version' : self.VERSION
+            'VERSION' : self.VERSION
         }
 
         self.session = session
@@ -165,7 +165,7 @@ class IGSessionCRUD(object):
             'CST': self.CLIENT_TOKEN,
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8',
-            'Version' : self.VERSION
+            'VERSION' : self.VERSION
         }
 
         self.HEADERS['DELETE'] = {
@@ -174,7 +174,7 @@ class IGSessionCRUD(object):
             'CST': self.CLIENT_TOKEN,
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8',
-            'Version' : self.VERSION,
+            'VERSION' : self.VERSION,
             '_method': 'DELETE'
         }
 
@@ -198,7 +198,7 @@ class IGService:
         self.API_KEY = api_key
         self.IG_USERNAME = username
         self.IG_PASSWORD = password
-        self.VERSION = version
+        self.VERSION = str(version)
 
         try:
             self.BASE_URL = self.D_BASE_URL[acc_type.lower()]
