@@ -460,7 +460,8 @@ class IGService:
                              force_open, guaranteed_stop, level, limit_distance,
                              limit_level, order_type, quote_id, size,
                              stop_distance, stop_level, time_force, 
-                             trailing_stop, trailing_stop_increment, session=None):
+                             trailing_stop, trailing_stop_increment, 
+                             dealReference, session=None):
         """Creates an OTC position"""
         params = {
             'currencyCode': currency_code,
@@ -478,8 +479,8 @@ class IGService:
             'stopDistance': stop_distance,
             'stopLevel': stop_level,
             'timeInForce': time_force,
-            'trailingStop' : trailing_stop,
-            'trailingStopIncrement' : trailing_stop_increment
+            'trailingStop': trailing_stop,
+            'trailingStopIncrement': trailing_stop_increment
         }
 
         print(params)
