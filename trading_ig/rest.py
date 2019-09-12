@@ -531,6 +531,7 @@ class IGService:
             'trailingStopIncrement': trailing_stop_increment#,
             #'guaranteedStop': guaranteed_stop
         }
+        print(params)
         url_params = {
             'deal_id': deal_id
         }
