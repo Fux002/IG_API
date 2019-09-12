@@ -57,7 +57,7 @@ class IGSessionCRUD(object):
 
     HEADERS = {}
 
-    def __init__(self, base_url, api_key, session):
+    def __init__(self, base_url, api_key, session, version):
         self.BASE_URL = base_url
         self.API_KEY = api_key
 
@@ -65,6 +65,7 @@ class IGSessionCRUD(object):
             'X-IG-API-KEY': self.API_KEY,
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8'
+            'Version' : version
         }
 
         self.session = session
@@ -187,13 +188,14 @@ class IGService:
     IG_USERNAME = None
     IG_PASSWORD = None
 
-    def __init__(self, username, password, api_key, acc_type="demo",
+    def __init__(self, username, password, api_key, acc_type="demo", version=1, 
                  session=None):
         """Constructor, calls the method required to connect to
         the API (accepts acc_type = LIVE or DEMO)"""
         self.API_KEY = api_key
         self.IG_USERNAME = username
         self.IG_PASSWORD = password
+        self.VERSION = version
 
         try:
             self.BASE_URL = self.D_BASE_URL[acc_type.lower()]
@@ -212,7 +214,7 @@ class IGService:
             self.session = session
 
         self.crud_session = IGSessionCRUD(self.BASE_URL, self.API_KEY,
-                                          self.session)
+                                          self.session, self.VERSION)
 
     def _get_session(self, session):
         """Returns a Requests session (from self.session) if session is None
