@@ -478,8 +478,6 @@ class IGService:
             'stopLevel': stop_level
         }
 
-        print(params)
-
         endpoint = '/positions/otc'
         action = 'create'
         response = self._req(action, endpoint, params, session)
@@ -515,16 +513,22 @@ class IGService:
             #return response.text
             raise DealingException(response.text)
 
-    def update_open_position2(self, limit_level, stop_level, trailing_stop, trailing_stop_distance, 
-        trailing_stop_increment, guaranteed_stop, deal_id, session=None):
+    def update_open_positionxxx(self, 
+        limit_level, 
+        stop_level, 
+        trailing_stop, 
+        trailing_stop_distance, 
+        trailing_stop_increment,
+        deal_id, 
+        session=None):
         """Updates an OTC position"""
         params = {
             'limitLevel': limit_level,
             'stopLevel': stop_level,
             'trailingStop' : trailing_stop,
             'trailingStopDistance': trailing_stop_distance,
-            'trailingStopIncrement': trailing_stop_increment,
-            'guaranteedStop': guaranteed_stop
+            'trailingStopIncrement': trailing_stop_increment#,
+            #'guaranteedStop': guaranteed_stop
         }
         print(params)
         url_params = {
