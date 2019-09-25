@@ -498,7 +498,7 @@ class IGService:
             raise KeyAllowanceException(response.text)
 
         else:
-            
+
             # Return response.text
             raise DealingException(response.text)
 
@@ -547,13 +547,13 @@ class IGService:
             # Return response.text
             raise DealingException(response.text)
 
-    def update_open_position(self, limit_level, stop_level, deal_id,
+    def update_open_position(self, limit_level, stop_level, guarenteed_stop, deal_id,
                              session=None):
         """Updates an OTC position"""
         params = {
             'limitLevel': limit_level,
             'stopLevel': stop_level,
-            'guaranteedStop': "true"
+            'guaranteedStop': guarenteed_stop
         }
         url_params = {
             'deal_id': deal_id
@@ -578,50 +578,6 @@ class IGService:
 
         else:
             # Return response.text
-            raise DealingException(response.text)
-
-    def update_open_positionxxx(self, 
-        limit_level, 
-        stop_level, 
-        trailing_stop, 
-        trailing_stop_distance, 
-        trailing_stop_increment,
-        deal_id, 
-        session=None):
-        """Updates an OTC position"""
-        params = {
-            'limitLevel': limit_level,
-            'stopLevel': stop_level,
-            'trailingStop' : trailing_stop,
-            'trailingStopDistance': trailing_stop_distance,
-            'trailingStopIncrement': trailing_stop_increment#,
-            #'guaranteedStop': guaranteed_stop
-        }
-        print(params)
-        url_params = {
-            'deal_id': deal_id
-        }
-        endpoint = '/positions/otc/{deal_id}'.format(**url_params)
-        action = 'update'
-        response = self._req(action, endpoint, params, session)
-        print(response)
-
-        if response.status_code == 200:
-
-            return json.loads(response.text)['dealReference']
-
-        elif response.status_code == 401:
-
-            # Raise a token exception
-            raise TokenException(response.text)
-
-        elif response.status_code == 403:
-
-            # Raise a key allowance exception
-            raise KeyAllowanceException(response.text)
-
-        else:
-            #return response.text
             raise DealingException(response.text)
 
     def fetch_working_orders(self, session = None):
@@ -737,7 +693,7 @@ class IGService:
 
     def update_working_order(self, good_till_date, level, limit_distance,
                              limit_level, stop_distance, stop_level,
-                             time_in_force, order_type, deal_id, session=None):
+                             time_in_force, order_type, guaranteed_stop, deal_id, session=None):
 
         good_till_date = conv_datetime(good_till_date, 3)
 
@@ -750,7 +706,8 @@ class IGService:
             'stopDistance': stop_distance,
             'stopLevel': stop_level,
             'timeInForce': time_in_force,
-            'type': order_type
+            'type': order_type,
+            'guaranteedStop': guaranteed_stop,
         }
         url_params = {
             'deal_id': deal_id
