@@ -17,7 +17,7 @@ from .utils import (_HAS_PANDAS, _HAS_BUNCH)
 from .utils import (conv_resol, conv_datetime, conv_to_ms)
 
 
-# Declare some custom exceptions to do proper error handling
+# Declare some custom exceptions to do proper error handling on the deal
 class DealingException(Exception):
 
     def __init__ (self, message):
@@ -29,7 +29,31 @@ class DealingException(Exception):
         self.message = message
 
 
-# Declare some custom exceptions to do proper error handling
+# Declare some custom exceptions to do proper error handling on the token
+class TokenException(Exception):
+
+    def __init__ (self, message):
+
+        # Call the base class constructor with the parameters it needs
+        super().__init__(message)
+
+        # Print the nessage
+        self.message = message
+
+
+# Declare some custom exceptions to do proper error handling on the token
+class KeyAllowanceException(Exception):
+
+    def __init__ (self, message):
+
+        # Call the base class constructor with the parameters it needs
+        super().__init__(message)
+
+        # Print the nessage
+        self.message = message
+
+
+# Declare some custom exceptions to do proper error handling on the dictionary
 class DealingDictionaryException(Exception):
 
     def __init__ (self, message):
@@ -394,6 +418,17 @@ class IGService:
 
             # Parse the data
             return self.parse_response(response.text)
+
+        elif response.status_code == 401:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
         else:
 
             # Raise the exception
@@ -449,11 +484,22 @@ class IGService:
         response = self._req(action, endpoint, params, session)
 
         if response.status_code == 200:
-            deal_reference = json.loads(response.text)['dealReference']
-            #return self.fetch_deal_by_deal_reference(deal_reference)
-            return deal_reference
+
+            return json.loads(response.text)['dealReference']
+
+        elif response.status_code == 401:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
         else:
-            #return response.text
+            
+            # Return response.text
             raise DealingException(response.text)
 
     def create_open_position(self, currency_code, direction, epic, expiry,
@@ -483,12 +529,22 @@ class IGService:
         response = self._req(action, endpoint, params, session)
 
         if response.status_code == 200:
-            deal_reference = json.loads(response.text)['dealReference']
 
-            #return self.fetch_deal_by_deal_reference(deal_reference)
-            return deal_reference
+            return json.loads(response.text)['dealReference']
+
+        elif response.status_code == 401:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
         else:
-            #return response.text
+
+            # Return response.text
             raise DealingException(response.text)
 
     def update_open_position(self, limit_level, stop_level, deal_id,
@@ -507,11 +563,21 @@ class IGService:
         response = self._req(action, endpoint, params, session)
 
         if response.status_code == 200:
-            deal_reference = json.loads(response.text)['dealReference']
-            #return self.fetch_deal_by_deal_reference(deal_reference)
-            return deal_reference
+
+            return json.loads(response.text)['dealReference']
+
+        elif response.status_code == 401:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
         else:
-            #return response.text
+            # Return response.text
             raise DealingException(response.text)
 
     def update_open_positionxxx(self, 
@@ -541,9 +607,19 @@ class IGService:
         print(response)
 
         if response.status_code == 200:
-            deal_reference = json.loads(response.text)['dealReference']
-            #return self.fetch_deal_by_deal_reference(deal_reference)
-            return deal_reference
+
+            return json.loads(response.text)['dealReference']
+
+        elif response.status_code == 401:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
         else:
             #return response.text
             raise DealingException(response.text)
@@ -627,6 +703,17 @@ class IGService:
             deal_reference = json.loads(response.text)['dealReference']
             #return self.fetch_deal_by_deal_reference(deal_reference)
             return deal_reference
+
+        elif response.status_code == 401:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
         else:
             #return response.text
             raise DealingException(response.text)
@@ -676,6 +763,17 @@ class IGService:
             deal_reference = json.loads(response.text)['dealReference']
             #return self.fetch_deal_by_deal_reference(deal_reference)
             return deal_reference
+
+        elif response.status_code == 401:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
         else:
             #return response.text
             raise DealingException(response.text)
