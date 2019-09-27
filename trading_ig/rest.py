@@ -707,7 +707,7 @@ class IGService:
             'stopLevel': stop_level,
             'timeInForce': time_in_force,
             'type': order_type,
-            'guaranteedStop': guaranteed_stop,
+            'guaranteedStop': guaranteed_stop
         }
         url_params = {
             'deal_id': deal_id
