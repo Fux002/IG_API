@@ -695,7 +695,11 @@ class IGService:
                              limit_level, stop_distance, stop_level,
                              time_in_force, order_type, guaranteed_stop, deal_id, session=None):
 
-        good_till_date = conv_datetime(good_till_date, 3)
+        # Only convert the date is datetime
+        if isinstance(good_till_date, datetime.datetime):
+
+            good_till_date = conv_datetime(good_till_date, 3)
+
 
         """Updates an OTC working order"""
         params = {
