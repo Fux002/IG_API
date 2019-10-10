@@ -419,9 +419,9 @@ class IGService:
             # Parse the data
             return self.parse_response(response.text)
 
-        elif response.status_code == 400 or 
-            response.status_code == 401 or 
-            response.status_code == 500 or 
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
             response.status_code == 504:
 
             # Raise a token exception
@@ -490,9 +490,9 @@ class IGService:
 
             return json.loads(response.text)['dealReference']
 
-        elif response.status_code == 400 or 
-            response.status_code == 401 or 
-            response.status_code == 500 or 
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
             response.status_code == 504:
 
             # Raise a token exception
@@ -538,9 +538,9 @@ class IGService:
 
             return json.loads(response.text)['dealReference']
 
-        elif response.status_code == 400 or 
-            response.status_code == 401 or 
-            response.status_code == 500 or 
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
             response.status_code == 504:
 
             # Raise a token exception
@@ -575,9 +575,9 @@ class IGService:
 
             return json.loads(response.text)['dealReference']
 
-        elif response.status_code == 400 or 
-            response.status_code == 401 or 
-            response.status_code == 500 or 
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
             response.status_code == 504:
 
             # Raise a token exception
@@ -672,9 +672,9 @@ class IGService:
             #return self.fetch_deal_by_deal_reference(deal_reference)
             return deal_reference
 
-        elif response.status_code == 400 or 
-            response.status_code == 401 or 
-            response.status_code == 500 or 
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
             response.status_code == 504:
 
             # Raise a token exception
@@ -741,9 +741,9 @@ class IGService:
             #return self.fetch_deal_by_deal_reference(deal_reference)
             return deal_reference
 
-        elif response.status_code == 400 or 
-            response.status_code == 401 or 
-            response.status_code == 500 or 
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
             response.status_code == 504:
 
             # Raise a token exception
