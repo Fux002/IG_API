@@ -1242,9 +1242,29 @@ class IGService:
         action = 'create'
         # this is the first create (BASIC_HEADERS)
         response = self._req(action, endpoint, params, session)
-        data = self.parse_response(response.text)
-        self.ig_session = data # store IG session
-        return data
+
+        if response.status_code == 200:
+
+            data = self.parse_response(response.text)
+            self.ig_session = data # store IG session
+            return data
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
+        else:
+            #return response.text
+            raise DealingException(response.text)
 
     def switch_account(self, account_id, default_account, session=None):
         """Switches active accounts, optionally setting the default account"""
