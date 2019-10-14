@@ -473,31 +473,53 @@ class IGService:
         endpoint = '/positions'
         action = 'read'
         response = self._req(action, endpoint, params, session)
-        data = self.parse_response(response.text)
-        if _HAS_PANDAS and self.return_dataframe:
-            import pandas as pd
-            lst = data['positions']
-            data = pd.DataFrame(lst)
 
-            d_cols = {
-                'market': ['bid', 'delayTime', 'epic', 'expiry', 'high',
-                           'instrumentName', 'instrumentType', 'lotSize', 'low',
-                           'marketStatus', 'netChange', 'offer',
-                           'percentageChange', 'scalingFactor',
-                           'streamingPricesAvailable', 'updateTime'],
-                'position': ['contractSize', 'controlledRisk', 'createdDate',
-                             'currency', 'dealId', 'dealSize', 'direction',
-                             'limitLevel', 'openLevel', 'stopLevel',
-                             'trailingStep', 'trailingStopDistance']
-            }
+        if response.status_code == 200:
 
-            if len(data) == 0:
-                data = pd.DataFrame(columns=self.colname_unique(d_cols))
-                return data
+            data = self.parse_response(response.text)
+            if _HAS_PANDAS and self.return_dataframe:
+                import pandas as pd
+                lst = data['positions']
+                data = pd.DataFrame(lst)
 
-            # data = self.expand_columns(data, d_cols)
+                d_cols = {
+                    'market': ['bid', 'delayTime', 'epic', 'expiry', 'high',
+                               'instrumentName', 'instrumentType', 'lotSize', 'low',
+                               'marketStatus', 'netChange', 'offer',
+                               'percentageChange', 'scalingFactor',
+                               'streamingPricesAvailable', 'updateTime'],
+                    'position': ['contractSize', 'controlledRisk', 'createdDate',
+                                 'currency', 'dealId', 'dealSize', 'direction',
+                                 'limitLevel', 'openLevel', 'stopLevel',
+                                 'trailingStep', 'trailingStopDistance']
+                }
 
-        return data
+                if len(data) == 0:
+                    data = pd.DataFrame(columns=self.colname_unique(d_cols))
+                    return data
+
+                # data = self.expand_columns(data, d_cols)
+
+            return data
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
+        else:
+
+            # Raise the exception
+            raise DealingDictionaryException(response.text)
+
 
     def close_open_position(self, deal_id, direction, epic, expiry, level,
                             order_type, quote_id, size, session=None):
@@ -628,42 +650,63 @@ class IGService:
         endpoint = '/workingorders'
         action = 'read'
         response = self._req(action, endpoint, params, session)
-        data = self.parse_response(response.text)
-        if _HAS_PANDAS and self.return_dataframe:
-            import pandas as pd
-            lst = data['workingOrders']
-            data = pd.DataFrame(lst)
 
-            d_cols = {
-                'marketData': [u'instrumentName', u'exchangeId',
-                               u'streamingPricesAvailable', u'offer', u'low',
-                               u'bid', u'updateTime', u'expiry', u'high',
-                               u'marketStatus', u'delayTime', u'lotSize',
-                               u'percentageChange', u'epic', u'netChange',
-                               u'instrumentType', u'scalingFactor'],
-                'workingOrderData': [u'size', u'trailingStopDistance',
-                                     u'direction', u'level', u'requestType',
-                                     u'currencyCode', u'contingentLimit',
-                                     u'trailingTriggerIncrement', u'dealId',
-                                     u'contingentStop', u'goodTill',
-                                     u'controlledRisk', u'trailingStopIncrement',
-                                     u'createdDate', u'epic',
-                                     u'trailingTriggerDistance', u'dma']
-            }
+        if response.status_code == 200:
 
-            if len(data) == 0:
-                data = pd.DataFrame(columns=self.colname_unique(d_cols))
-                return data
+            data = self.parse_response(response.text)
+            if _HAS_PANDAS and self.return_dataframe:
+                import pandas as pd
+                lst = data['workingOrders']
+                data = pd.DataFrame(lst)
 
-            col_overlap_allowed = ['epic']
+                d_cols = {
+                    'marketData': [u'instrumentName', u'exchangeId',
+                                   u'streamingPricesAvailable', u'offer', u'low',
+                                   u'bid', u'updateTime', u'expiry', u'high',
+                                   u'marketStatus', u'delayTime', u'lotSize',
+                                   u'percentageChange', u'epic', u'netChange',
+                                   u'instrumentType', u'scalingFactor'],
+                    'workingOrderData': [u'size', u'trailingStopDistance',
+                                         u'direction', u'level', u'requestType',
+                                         u'currencyCode', u'contingentLimit',
+                                         u'trailingTriggerIncrement', u'dealId',
+                                         u'contingentStop', u'goodTill',
+                                         u'controlledRisk', u'trailingStopIncrement',
+                                         u'createdDate', u'epic',
+                                         u'trailingTriggerDistance', u'dma']
+                }
 
-            data = self.expand_columns(data, d_cols, False, col_overlap_allowed)
+                if len(data) == 0:
+                    data = pd.DataFrame(columns=self.colname_unique(d_cols))
+                    return data
 
-            # d = data.to_dict()
-            # data = pd.concat(list(map(pd.DataFrame, d.values())),
-            #                  keys=list(d.keys())).T
+                col_overlap_allowed = ['epic']
 
-        return data
+                data = self.expand_columns(data, d_cols, False, col_overlap_allowed)
+
+                # d = data.to_dict()
+                # data = pd.concat(list(map(pd.DataFrame, d.values())),
+                #                  keys=list(d.keys())).T
+
+            return data
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
+        else:
+            # Return response.text
+            raise DealingException(response.text)
+
 
     def create_working_order(self, currency_code, direction, epic, expiry,
                              good_till_date, guaranteed_stop, level,
@@ -734,8 +777,23 @@ class IGService:
             deal_reference = json.loads(response.text)['dealReference']
             #return self.fetch_deal_by_deal_reference(deal_reference)
             return deal_reference
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
         else:
-            return response.text  # parse_response ?
+            #return response.text
+            raise DealingException(response.text)
 
     def update_working_order(self, good_till_date, level, limit_distance,
                              limit_level, stop_distance, stop_level,
@@ -882,11 +940,32 @@ class IGService:
         endpoint = '/markets/{epic}'.format(**url_params)
         action = 'read'
         response = self._req(action, endpoint, params, session)
-        data = self.parse_response(response.text)
-        if _HAS_BUNCH and self.return_bunch:
-            from .utils import bunchify
-            data = bunchify(data)
-        return data
+
+        if response.status_code == 200:
+
+            data = self.parse_response(response.text)
+            if _HAS_BUNCH and self.return_bunch:
+                from .utils import bunchify
+                data = bunchify(data)
+            return data
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
+        else:
+            #return response.text
+            raise DealingException(response.text)
+
 
     def search_markets(self, search_term, session=None):
         """Returns all markets matching the search term"""
@@ -896,11 +975,31 @@ class IGService:
         }
         action = 'read'
         response = self._req(action, endpoint, params, session)
-        data = self.parse_response(response.text)
-        if _HAS_PANDAS and self.return_dataframe:
-            import pandas as pd
-            data = pd.DataFrame(data['markets'])
-        return data
+
+        if response.status_code == 200:
+
+            data = self.parse_response(response.text)
+            if _HAS_PANDAS and self.return_dataframe:
+                import pandas as pd
+                data = pd.DataFrame(data['markets'])
+            return data
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
+        else:
+            #return response.text
+            raise DealingException(response.text)
 
     def format_prices_old(self, prices):
         """Format prices data as a dict with
