@@ -152,10 +152,7 @@ class IGSessionCRUD(object):
                                 headers=self.HEADERS['LOGGED_IN'])
 
         # Test the response
-        if response.status_code == 200:
-            return response
-        else:
-            raise SessionCreationException(response.text)
+        return response
 
     def read(self, endpoint, params, session):
         """Read = GET with headers=LOGGED_IN_HEADERS"""
