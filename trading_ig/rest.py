@@ -285,7 +285,31 @@ class IGService:
         """Creates a CRUD request and returns response"""
         session = self._get_session(session)
         response = self.crud_session.req(action, endpoint, params, session)
-        return response
+        
+        if response.status_code == 200:
+
+            return response
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
+        else:
+
+            # Return response.text
+            raise DealingException(response.text)
+
+
+
 
     ########## PARSE_RESPONSE ##########
 
