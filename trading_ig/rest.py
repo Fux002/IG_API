@@ -463,7 +463,7 @@ class IGService:
         else:
 
             # Raise the exception
-            raise DealingDictionaryException('Could not get the dictionary')
+            raise DealingException(response.text)
 
     def fetch_open_positions(self, session = None):
         """Returns all open positions for the active account"""
@@ -516,7 +516,7 @@ class IGService:
         else:
 
             # Raise the exception
-            raise DealingDictionaryException(response.text)
+            raise DealingException(response.text)
 
 
     def close_open_position(self, deal_id, direction, epic, expiry, level,
