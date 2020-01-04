@@ -465,6 +465,7 @@ class IGService:
             # Raise the exception
             raise DealingException(response.text)
 
+
     def fetch_open_positions(self, session = None):
         """Returns all open positions for the active account"""
         params = {}
@@ -824,7 +825,6 @@ class IGService:
 
         if response.status_code == 200:
             deal_reference = json.loads(response.text)['dealReference']
-            #return self.fetch_deal_by_deal_reference(deal_reference)
             return deal_reference
 
         elif response.status_code == 400 or \
