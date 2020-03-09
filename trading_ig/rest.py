@@ -1098,6 +1098,7 @@ class IGService:
             data['prices'] = self.format_prices(data['prices'])
         return(data)
 
+
     def fetch_historical_prices_by_epic_and_date_range(self, epic, resolution,
                                                        start_date, end_date,
                                                        session=None):
