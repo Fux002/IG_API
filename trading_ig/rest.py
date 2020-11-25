@@ -1276,7 +1276,8 @@ class IGService:
         endpoint = '/session'
         action = 'update'
         response = self._req(action, endpoint, params, session)
-        self._set_headers(response.headers, False)
+        #self._set_headers(response.headers, False) # I think this line should be as per below and therefore this is a bug.
+        self.crud_session._set_headers(response.headers, False)
         data = self.parse_response(response.text)
         return data
 
@@ -1323,3 +1324,8 @@ class IGService:
         return data
 
     ############ END ############
+
+
+if __name__ == '__main__':
+    igS = IGService()
+    igS = IGService('playerclee', 'Callum123', 'c9855b94e1e8e7a051eaf829daf97637156b7f6d', 'XFDLX', 1)
