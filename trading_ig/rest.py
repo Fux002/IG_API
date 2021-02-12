@@ -162,7 +162,15 @@ class IGSessionCRUD(object):
         url = self._url(endpoint)
         # print(url, params)
         session = self._get_session(session)
-        response = session.get(url,
+
+        if endpoint == '/positions':
+            print('LOGGED_IN2 header used')
+            response = session.get(url,
+                               params=params,
+                               headers=self.HEADERS['LOGGED_IN2'])
+        else:
+            print('LOGGED_IN header used')
+            response = session.get(url,
                                params=params,
                                headers=self.HEADERS['LOGGED_IN'])
         # Test the response
@@ -217,6 +225,15 @@ class IGSessionCRUD(object):
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8',
             'VERSION' : self.VERSION
+        }
+
+        self.HEADERS['LOGGED_IN2'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : '2'
         }
 
         self.HEADERS['DELETE'] = {
@@ -488,7 +505,7 @@ class IGService:
                                'percentageChange', 'scalingFactor',
                                'streamingPricesAvailable', 'updateTime'],
                     'position': ['contractSize', 'controlledRisk', 'createdDate',
-                                 'currency', 'dealId', 'dealSize', 'direction',
+                                 'currency','dealReference', 'dealId', 'dealSize', 'direction',
                                  'limitLevel', 'openLevel', 'stopLevel',
                                  'trailingStep', 'trailingStopDistance']
                 }
@@ -1277,11 +1294,11 @@ class IGService:
         endpoint = '/session'
         action = 'update'
         response = self._req(action, endpoint, params, session)
-        #self._set_headers(response.headers, False) # I think this line should be as per below and therefore this is a bug.
-        try:
-            self.crud_session._set_headers(response.headers, False)
-        except exception as e:
-            print(str(e))
+        self._set_headers(response.headers, False) # I think this line should be as per below and therefore this is a bug.
+        # try:
+        #     self.crud_session._set_headers(response.headers, False)
+        # except exception as e:
+        #     print(str(e))
         data = self.parse_response(response.text)
 
         if response.status_code == 200:
