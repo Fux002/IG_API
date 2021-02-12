@@ -1277,9 +1277,35 @@ class IGService:
         endpoint = '/session'
         action = 'update'
         response = self._req(action, endpoint, params, session)
-        self._set_headers(response.headers, False)
+        #self._set_headers(response.headers, False) # I think this line should be as per below and therefore this is a bug.
+        try:
+            self.crud_session._set_headers(response.headers, False)
+        except exception as e:
+            print(str(e))
         data = self.parse_response(response.text)
-        return data
+
+        if response.status_code == 200:
+
+            data = self.parse_response(response.text)
+            self.ig_session = data # store IG session
+            return data, response.status_code
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
+        else:
+            #return response.text
+            raise DealingException(response.text) 
 
     ############ END ############
 
@@ -1324,3 +1350,8 @@ class IGService:
         return data
 
     ############ END ############
+
+
+if __name__ == '__main__':
+    igS = IGService()
+    igS = IGService('playerclee', 'Callum123', 'c9855b94e1e8e7a051eaf829daf97637156b7f6d', 'XFDLX', 1)
