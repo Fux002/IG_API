@@ -1294,11 +1294,11 @@ class IGService:
         endpoint = '/session'
         action = 'update'
         response = self._req(action, endpoint, params, session)
-        self._set_headers(response.headers, False) # I think this line should be as per below and therefore this is a bug.
-        # try:
-        #     self.crud_session._set_headers(response.headers, False)
-        # except exception as e:
-        #     print(str(e))
+        # self._set_headers(response.headers, False) # I think this line should be as per below and therefore this is a bug.
+        try:
+            self.crud_session._set_headers(response.headers, False)
+        except exception as e:
+            print(str(e))
         data = self.parse_response(response.text)
 
         if response.status_code == 200:
