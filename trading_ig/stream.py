@@ -50,5 +50,5 @@ class IGStreamService(object):
             self.ls_client.unsubscribe(subcription_key)
 
     def disconnect(self):
-        self.ls_client.unsubscribe_all()
+        self.unsubscribe_all()
         self.ls_client.disconnect()
