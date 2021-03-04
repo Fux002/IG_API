@@ -354,7 +354,7 @@ class LSClient(object):
                 # a rebind of the session.
                 log.debug("LOOP")
                 receive = False
-                rebind = False
+                rebind = True
             elif message.startswith(SYNC_ERROR_CMD):
                 # Terminate the receiving loop on SYNC ERROR message.
                 # A complete implementation should create a new session
