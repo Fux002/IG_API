@@ -163,13 +163,19 @@ class IGSessionCRUD(object):
         # print(url, params)
         session = self._get_session(session)
 
-        if endpoint == '/positions':
-            print('LOGGED_IN2 header used')
+        if endpoint[0:8] == '/markets':
+            # print('LOGGED_IN3 header used')
+            response = session.get(url,
+                               params=params,
+                               headers=self.HEADERS['LOGGED_IN3'])
+
+        elif endpoint == '/positions':
+            # print('LOGGED_IN2 header used')
             response = session.get(url,
                                params=params,
                                headers=self.HEADERS['LOGGED_IN2'])
         else:
-            print('LOGGED_IN header used')
+            # print('LOGGED_IN header used')
             response = session.get(url,
                                params=params,
                                headers=self.HEADERS['LOGGED_IN'])
@@ -234,6 +240,15 @@ class IGSessionCRUD(object):
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8',
             'VERSION' : '2'
+        }
+
+        self.HEADERS['LOGGED_IN3'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : '3'
         }
 
         self.HEADERS['DELETE'] = {
