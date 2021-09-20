@@ -996,6 +996,49 @@ class IGService:
             #return response.text
             raise DealingException(response.text)
 
+    def fetch_market_by_epic_mult(self, mult_epic, session=None):
+        """Returns the details of the given market"""
+        params = {}
+
+        epic_list = 'epics='
+        for i in range(len(mult_epic)):
+            epic = mult_epic[i]
+            if i>1:
+                epic_list = _list+'%2C'
+            epic_list = epic_list+char(epic)
+        print(epic_list)
+        url_params = {
+            'epic': epic_list
+        }
+        endpoint = '/markets?{epic}'.format(**url_params)
+        action = 'read'
+        response = self._req(action, endpoint, params, session)
+
+        if response.status_code == 200:
+
+            data = self.parse_response(response.text)
+            if _HAS_BUNCH and self.return_bunch:
+                from .utils import bunchify
+                data = bunchify(data)
+            return data
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
+        else:
+            #return response.text
+            raise DealingException(response.text)
+
 
     def search_markets(self, search_term, session=None):
         """Returns all markets matching the search term"""
