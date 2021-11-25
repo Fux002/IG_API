@@ -163,7 +163,13 @@ class IGSessionCRUD(object):
         # print(url, params)
         session = self._get_session(session)
 
-        if endpoint[0:8] == '/markets':
+        if endpoint[0:9] == '/markets?':
+            # print('LOGGED_IN3 header used')
+            response = session.get(url,
+                               params=params,
+                               headers=self.HEADERS['LOGGED_IN2'])
+
+        elif endpoint[0:8] == '/markets':
             # print('LOGGED_IN3 header used')
             response = session.get(url,
                                params=params,
@@ -1000,17 +1006,20 @@ class IGService:
         """Returns the details of the given market"""
         params = {}
 
+        # print('Mult epics arrive in %s: '% mult_epic)
+
         epic_list = 'epics='
         for i in range(len(mult_epic)):
             epic = mult_epic[i]
             if i>1:
-                epic_list = _list+'%2C'
-            epic_list = epic_list+char(epic)
-        print(epic_list)
+                epic_list = epic_list+'%2C'
+            epic_list = epic_list+epic
+        # print(epic_list)
         url_params = {
             'epic': epic_list
         }
         endpoint = '/markets?{epic}'.format(**url_params)
+        # print('The endpoint used is: %s' %endpoint)
         action = 'read'
         response = self._req(action, endpoint, params, session)
 
