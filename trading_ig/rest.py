@@ -359,7 +359,6 @@ class IGService:
     def _req(self, action, endpoint, params, session):
         """Creates a CRUD request and returns response"""
         session = self._get_session(session)
-        print('My Session is: %s' %session)
 
         response = self.crud_session.req(action, endpoint, params, session)
         return response
@@ -1013,7 +1012,6 @@ class IGService:
             'epic': epic
         }
         endpoint = '/markets/{epic}'.format(**url_params)
-        print('Fetch_market_by_epic endpoint: %s' % endpoint)
         action = 'read'
         response = self._req(action, endpoint, params, session)
 
@@ -1095,7 +1093,7 @@ class IGService:
         params = {
             'searchTerm': search_term
         }
-        print('My endpoint is: %s and params: %s' % (endpoint,params))
+        # print('My endpoint is: %s and params: %s' % (endpoint,params))
         action = 'read'
         response = self._req(action, endpoint, params, session)
 
