@@ -169,7 +169,7 @@ class IGSessionCRUD(object):
                                params=params,
                                headers=self.HEADERS['LOGGED_IN2'])
 
-        elif endpoint[0:8] == '/markets':
+        elif endpoint[0:9] == '/markets/':
             # print('LOGGED_IN3 header used')
             response = session.get(url,
                                params=params,
