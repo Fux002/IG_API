@@ -104,6 +104,43 @@ class IGSessionCRUD(object):
             'VERSION' : self.VERSION
         }
 
+        self.HEADERS['LOGGED_IN'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : self.VERSION
+        }
+
+        self.HEADERS['LOGGED_IN2'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : '2'
+        }
+
+        self.HEADERS['LOGGED_IN3'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : '3'
+        }
+
+        self.HEADERS['DELETE'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : self.VERSION,
+            '_method': 'DELETE'
+        }
+
         self.session = session
 
         self.create = self._create_first
@@ -169,7 +206,7 @@ class IGSessionCRUD(object):
                                params=params,
                                headers=self.HEADERS['LOGGED_IN2'])
 
-        elif endpoint[0:9] == '/markets/':
+        elif endpoint[0:8] == '/markets/':
             # print('LOGGED_IN3 header used')
             response = session.get(url,
                                params=params,
@@ -322,6 +359,8 @@ class IGService:
     def _req(self, action, endpoint, params, session):
         """Creates a CRUD request and returns response"""
         session = self._get_session(session)
+        print('My Session is: %s' %session)
+
         response = self.crud_session.req(action, endpoint, params, session)
         return response
 
@@ -974,6 +1013,7 @@ class IGService:
             'epic': epic
         }
         endpoint = '/markets/{epic}'.format(**url_params)
+        print('Fetch_market_by_epic endpoint: %s' % endpoint)
         action = 'read'
         response = self._req(action, endpoint, params, session)
 
@@ -1055,6 +1095,7 @@ class IGService:
         params = {
             'searchTerm': search_term
         }
+        print('My endpoint is: %s and params: %s' % (endpoint,params))
         action = 'read'
         response = self._req(action, endpoint, params, session)
 
