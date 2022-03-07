@@ -92,6 +92,8 @@ class IGSessionCRUD(object):
 
     HEADERS = {}
 
+
+
     def __init__(self, base_url, api_key, session, version=1):
         self.BASE_URL = base_url
         self.API_KEY = api_key
@@ -206,7 +208,7 @@ class IGSessionCRUD(object):
                                params=params,
                                headers=self.HEADERS['LOGGED_IN2'])
 
-        elif endpoint[0:8] == '/markets/':
+        elif endpoint[0:9] == '/markets/':
             # print('LOGGED_IN3 header used')
             response = session.get(url,
                                params=params,
