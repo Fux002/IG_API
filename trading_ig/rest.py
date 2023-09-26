@@ -92,6 +92,8 @@ class IGSessionCRUD(object):
 
     HEADERS = {}
 
+
+
     def __init__(self, base_url, api_key, session, version=1):
         self.BASE_URL = base_url
         self.API_KEY = api_key
@@ -102,6 +104,43 @@ class IGSessionCRUD(object):
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8',
             'VERSION' : self.VERSION
+        }
+
+        self.HEADERS['LOGGED_IN'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : self.VERSION
+        }
+
+        self.HEADERS['LOGGED_IN2'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : '2'
+        }
+
+        self.HEADERS['LOGGED_IN3'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : '3'
+        }
+
+        self.HEADERS['DELETE'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : self.VERSION,
+            '_method': 'DELETE'
         }
 
         self.session = session
@@ -162,7 +201,27 @@ class IGSessionCRUD(object):
         url = self._url(endpoint)
         # print(url, params)
         session = self._get_session(session)
-        response = session.get(url,
+
+        if endpoint[0:9] == '/markets?':
+            # print('LOGGED_IN3 header used')
+            response = session.get(url,
+                               params=params,
+                               headers=self.HEADERS['LOGGED_IN2'])
+
+        elif endpoint[0:9] == '/markets/':
+            # print('LOGGED_IN3 header used')
+            response = session.get(url,
+                               params=params,
+                               headers=self.HEADERS['LOGGED_IN3'])
+
+        elif endpoint == '/positions':
+            # print('LOGGED_IN2 header used')
+            response = session.get(url,
+                               params=params,
+                               headers=self.HEADERS['LOGGED_IN2'])
+        else:
+            # print('LOGGED_IN header used')
+            response = session.get(url,
                                params=params,
                                headers=self.HEADERS['LOGGED_IN'])
         # Test the response
@@ -217,6 +276,24 @@ class IGSessionCRUD(object):
             'Content-Type': 'application/json',
             'Accept': 'application/json; charset=UTF-8',
             'VERSION' : self.VERSION
+        }
+
+        self.HEADERS['LOGGED_IN2'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : '2'
+        }
+
+        self.HEADERS['LOGGED_IN3'] = {
+            'X-IG-API-KEY': self.API_KEY,
+            'X-SECURITY-TOKEN': self.SECURITY_TOKEN,
+            'CST': self.CLIENT_TOKEN,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json; charset=UTF-8',
+            'VERSION' : '3'
         }
 
         self.HEADERS['DELETE'] = {
@@ -284,6 +361,7 @@ class IGService:
     def _req(self, action, endpoint, params, session):
         """Creates a CRUD request and returns response"""
         session = self._get_session(session)
+
         response = self.crud_session.req(action, endpoint, params, session)
         return response
 
@@ -488,7 +566,7 @@ class IGService:
                                'percentageChange', 'scalingFactor',
                                'streamingPricesAvailable', 'updateTime'],
                     'position': ['contractSize', 'controlledRisk', 'createdDate',
-                                 'currency', 'dealId', 'dealSize', 'direction',
+                                 'currency','dealReference', 'dealId', 'dealSize', 'direction',
                                  'limitLevel', 'openLevel', 'stopLevel',
                                  'trailingStep', 'trailingStopDistance']
                 }
@@ -964,6 +1042,52 @@ class IGService:
             #return response.text
             raise DealingException(response.text)
 
+    def fetch_market_by_epic_mult(self, mult_epic, session=None):
+        """Returns the details of the given market"""
+        params = {}
+
+        # print('Mult epics arrive in %s: '% mult_epic)
+
+        epic_list = 'epics='
+        for i in range(len(mult_epic)):
+            epic = mult_epic[i]
+            if i>1:
+                epic_list = epic_list+'%2C'
+            epic_list = epic_list+epic
+        # print(epic_list)
+        url_params = {
+            'epic': epic_list
+        }
+        endpoint = '/markets?{epic}'.format(**url_params)
+        # print('The endpoint used is: %s' %endpoint)
+        action = 'read'
+        response = self._req(action, endpoint, params, session)
+
+        if response.status_code == 200:
+
+            data = self.parse_response(response.text)
+            if _HAS_BUNCH and self.return_bunch:
+                from .utils import bunchify
+                data = bunchify(data)
+            return data
+
+        elif response.status_code == 400 or \
+            response.status_code == 401 or \
+            response.status_code == 500 or \
+            response.status_code == 504:
+
+            # Raise a token exception
+            raise TokenException(response.text)
+
+        elif response.status_code == 403:
+
+            # Raise a key allowance exception
+            raise KeyAllowanceException(response.text)
+
+        else:
+            #return response.text
+            raise DealingException(response.text)
+
 
     def search_markets(self, search_term, session=None):
         """Returns all markets matching the search term"""
@@ -971,6 +1095,7 @@ class IGService:
         params = {
             'searchTerm': search_term
         }
+        # print('My endpoint is: %s and params: %s' % (endpoint,params))
         action = 'read'
         response = self._req(action, endpoint, params, session)
 
@@ -1277,7 +1402,7 @@ class IGService:
         endpoint = '/session'
         action = 'update'
         response = self._req(action, endpoint, params, session)
-        #self._set_headers(response.headers, False) # I think this line should be as per below and therefore this is a bug.
+        # self._set_headers(response.headers, False) # I think this line should be as per below and therefore this is a bug.
         try:
             self.crud_session._set_headers(response.headers, False)
         except exception as e:
